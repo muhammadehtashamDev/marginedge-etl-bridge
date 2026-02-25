@@ -135,6 +135,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 663634167,99,"Almonds, Sliced","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Pound,5.42
 989670551,585584414,"Almonds, Whole","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Pound,5.91
 683507694,null,Alta Verde Amaro,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),21.0
+1127264234,null,Altxor Txakolina Blanco 2024,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),11.33
 686733419,607173857,Alvear Cream Sherry,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,13.33
 765845506,null,Amanoya Himemaru Ara,"[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False,Each,2.19
 736130187,null,Amara Blood Orange Liquer,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,bottle (750 Milliliters),32.0
@@ -152,7 +153,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 902492834,607174041,Angostura Orange Bitters,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (6.7 Fluid Ounces),16.0
 898204271,null,Aonori,"[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,aonori (Bag),7.15
 849858798,null,Apctr08 Cont Deli 8 Oz Clr Pp,"[{'categoryId': '1077', 'percentAllocation': 100.0}]",1,False,500 Each,37.98
-662166387,201212354,Aperol Aperitivo,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (Liter),28.5
+662166387,201212354,Aperol Aperitivo,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (Liter),32.95
 995338858,null,Aperol Ready to Drink,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Each,3.04
 696469958,null,API Monthly Subscription - Toast Inc.,"[{'categoryId': '678311', 'percentAllocation': 100.0}]",1,False,Other,25.0
 685064711,607191807,Apostoles Gin,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,20.0
@@ -265,7 +266,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 662187883,null,"Bar, Cucumbers","[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False,Pound,1.88
 679161696,608056619,"Bar, Dragon Fruit","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Pound,3.76
 709492333,null,"Bar, eggs","[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False,Container,9.99
-682803367,null,"Bar, Fennel","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Bag,1.59
+682803367,null,"Bar, Fennel","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Bag,1.6
 889306213,null,Bar Flores Final Menu Design,"[{'categoryId': '1891382', 'percentAllocation': 100.0}]",1,False,Other,1200.0
 662166304,84,"Bar, Ginger","[{'categoryId': '1073', 'percentAllocation': 100.0}]",2,False,Pound,3.37
 662165428,206,"Bar, Grapefruit","[{'categoryId': '1073', 'percentAllocation': 100.0}]",5,False,Each,1.0
@@ -275,10 +276,10 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 677148838,null,"Bar, Kosher Salt","[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False,Pound,3.04
 816518762,819,"Bar, Kumquats","[{'categoryId': '1065', 'percentAllocation': 100.0}]",2,False,Pound,7.32
 681971984,333,"Bar, Lemongrass","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,12 Each,6.85
-662163982,12,"Bar, Lemons","[{'categoryId': '1073', 'percentAllocation': 100.0}]",2,False,Each,0.29
+662163982,12,"Bar, Lemons","[{'categoryId': '1073', 'percentAllocation': 100.0}]",2,False,Each,0.17
 677148227,null,"Bar, Lemons Meyer","[{'categoryId': '1065', 'percentAllocation': 100.0}]",1,False,Pound,2.86
 670610783,null,Barley Shochu,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,23.0
-662166293,25,"Bar, Limes","[{'categoryId': '1073', 'percentAllocation': 100.0}]",5,False,Each,0.35
+662166293,25,"Bar, Limes","[{'categoryId': '1073', 'percentAllocation': 100.0}]",5,False,Each,0.53
 722734098,232,"Bar, Mangos","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Each,2.27
 703515610,null,"Bar, Marjoram","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Pound,9.13
 662164132,51,"Bar, Mint","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Pound,6.64
@@ -302,7 +303,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 689593372,null,"Bar, Yellow Bell Peppers","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Pound,2.74
 682646563,160,"Base, Chicken","[{'categoryId': '1066', 'percentAllocation': 100.0}]",2,False,Gallon,34.73
 908812605,421,"Base, Vegetable","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Pound,11.53
-662164084,24,"Basil, Fresh","[{'categoryId': '1065', 'percentAllocation': 100.0}]",7,False,Pound,7.13
+662164084,24,"Basil, Fresh","[{'categoryId': '1065', 'percentAllocation': 100.0}]",7,False,Pound,7.14
 670611307,201212372,Basil Hayden Bourbon,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (Liter),45.49
 709554114,201212373,Basil Hayden Dark Rye,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),31.5
 670611171,null,Basil Hayden Red Wine Cask,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,30.04
@@ -466,7 +467,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 668412161,null,Bottle 8 Oz Flint Boston Round 16080F,"[{'categoryId': '1091', 'percentAllocation': 100.0}]",1,False,12 Each,8.38
 982460807,null,Bottle Deposit - At Purchase (0.4),"[{'categoryId': '1071', 'percentAllocation': 100.0}]",1,False,Bottle,0.1
 663635195,null,Bottle Deposit - Beer ($0.05),"[{'categoryId': '1071', 'percentAllocation': 100.0}]",9,False,Each,0.0
-677033058,639874979,Bottle Deposit - Beer (.05),"[{'categoryId': '1071', 'percentAllocation': 100.0}]",10,False,Each,0.05
+677033058,639874979,Bottle Deposit - Beer (.05),"[{'categoryId': '1071', 'percentAllocation': 100.0}]",11,False,Each,0.05
 851347108,639878647,Bottle Deposit - Beer (.10),"[{'categoryId': '1071', 'percentAllocation': 100.0}]",3,False,Each,0.1
 719483222,null,Bottle Deposit - Beer (.6),"[{'categoryId': '1069', 'percentAllocation': 100.0}]",1,False,Each,0.05
 662166433,563477678,Bottle Deposit - Liquor,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",8,False,Bottle,0.05
@@ -475,7 +476,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 685976949,660012012,Bottle Deposit - Liquor (.05),"[{'categoryId': '1072', 'percentAllocation': 100.0}]",8,False,Each,0.05
 669198210,639877211,Bottle Deposit - Liquor (.10),"[{'categoryId': '1072', 'percentAllocation': 100.0}]",22,False,Each,0.1
 663619100,563531628,Bottle Deposit - NA Bev,"[{'categoryId': '1075', 'percentAllocation': 100.0}]",8,False,Each,0.1
-668379772,639875254,Bottle Deposit - NA Bev (.05),"[{'categoryId': '1075', 'percentAllocation': 100.0}]",12,False,Each,0.05
+668379772,639875254,Bottle Deposit - NA Bev (.05),"[{'categoryId': '1075', 'percentAllocation': 100.0}]",13,False,Each,0.05
 662193833,639875727,Bottle Deposit - NA Bev (.10),"[{'categoryId': '1075', 'percentAllocation': 100.0}]",12,False,Each,0.1
 705737786,null,Bottle Deposits,"[{'categoryId': '1075', 'percentAllocation': 100.0}]",0,False,Each,200.0
 662166415,563460509,Bottle Deposit - Wine,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",16,False,Bottle,0.1
@@ -663,11 +664,11 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 662166459,201212420,Chartreuse Yellow,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),56.37
 1076000001,null,Chartruese 1605 Yellow,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,0.0
 1035752420,null,Chateau Lafon-Rochet 2020,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),40.0
-662162849,69,"Cheese, American Sliced","[{'categoryId': '1068', 'percentAllocation': 100.0}]",3,False,Pound,3.42
+662162849,69,"Cheese, American Sliced","[{'categoryId': '1068', 'percentAllocation': 100.0}]",3,False,Pound,3.35
 707176165,151,"Cheese, Blue Crumbles","[{'categoryId': '1068', 'percentAllocation': 100.0}]",4,False,Pound,3.89
 662187606,268,"Cheese, Burrata","[{'categoryId': '1068', 'percentAllocation': 100.0}]",2,False,Pound,7.91
 1042801284,748470091,"Cheese, Cheddar","[{'categoryId': '1068', 'percentAllocation': 100.0}]",0,False,Pound,10.0
-855709102,125,"Cheese, Cheddar Shredded","[{'categoryId': '1068', 'percentAllocation': 100.0}]",2,False,Pound,5.13
+855709102,125,"Cheese, Cheddar Shredded","[{'categoryId': '1068', 'percentAllocation': 100.0}]",2,False,Pound,5.25
 666667642,17,"Cheese, Cheddar Sliced","[{'categoryId': '1068', 'percentAllocation': 100.0}]",3,False,Pound,7.11
 706470248,null,"Cheese, Cheddar Vegan Sliced","[{'categoryId': '1068', 'percentAllocation': 100.0}]",1,False,Each,4.42
 1004849947,null,Cheeseclot 36x60YD Hvy Fold Pkd Sht,"[{'categoryId': '1088', 'percentAllocation': 100.0}]",0,False,12 Each,84.63
@@ -703,7 +704,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 662161214,827,"Cheese, Taleggio","[{'categoryId': '1068', 'percentAllocation': 100.0}]",5,False,Pound,11.95
 897314031,597274835,"Cherries, Fresh","[{'categoryId': '1065', 'percentAllocation': 100.0}]",3,False,Pound,12.59
 1077139127,941,"Cherries, Frozen","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Pound,2.68
-663617242,509,"Cherries, Luxardo Maraschino","[{'categoryId': '1073', 'percentAllocation': 100.0}]",2,False,Kilogram,28.0
+663617242,509,"Cherries, Luxardo Maraschino","[{'categoryId': '1073', 'percentAllocation': 100.0}]",2,False,Kilogram,30.67
 1083176440,136,"Cherries, Maraschino","[{'categoryId': '1066', 'percentAllocation': 100.0}]",2,False,Gallon,47.41
 917806435,null,Cherry,"[{'categoryId': '1065', 'percentAllocation': 100.0}]",0,False,Pound,14.5
 1023111229,617,"Chervil, Fresh","[{'categoryId': '1065', 'percentAllocation': 100.0}]",1,False,Pound,18.28
@@ -940,7 +941,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 779517167,null,Cs Cup ppr Hot 8 Oz Wht Solo,"[{'categoryId': '1077', 'percentAllocation': 100.0}]",1,False,1000 Each,52.2
 665500576,6,"Cucumbers, Fresh","[{'categoryId': '1073', 'percentAllocation': 100.0}]",7,False,Each,1.88
 686088602,676808149,"Cucumbers, Lemon","[{'categoryId': '1065', 'percentAllocation': 100.0}]",1,False,Pound,5.0
-679330939,null,"Cucumbers, Persian","[{'categoryId': '1065', 'percentAllocation': 100.0}]",1,False,Pound,3.58
+679330939,null,"Cucumbers, Persian","[{'categoryId': '1065', 'percentAllocation': 100.0}]",1,False,Pound,3.94
 663613881,644441195,"Cucumbers, Pickling","[{'categoryId': '1065', 'percentAllocation': 100.0}]",1,False,Pound,1.08
 715060663,null,Cuish Mexicano Joven Mezcal,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),65.0
 691185956,null,Cup 2OZ Pla Clear Portion C World Centric,"[{'categoryId': '1077', 'percentAllocation': 100.0}]",1,False,2000 Each,85.9
@@ -1150,6 +1151,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 683508367,607182027,Fernet Leopold Amaro,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),31.5
 670642980,764569715,Fernet Menta,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,26.79
 710502532,607182028,Fernet Vallet Liqueur,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),21.0
+1127313184,201212634,Ferrand 1840 Cognac,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),33.08
 1115052149,null,Fever Tree Club Soda 150ML,"[{'categoryId': '1075', 'percentAllocation': 100.0}]",0,False,Bottle,0.5
 1107450301,1051,Fever Tree Club Soda 200ML,"[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False,Bottle,1.29
 691128570,null,Fever Tree Club Soda 500ML,"[{'categoryId': '1075', 'percentAllocation': 100.0}]",1,False,Bottle (500 Milliliters),1.94
@@ -1203,7 +1205,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 682036307,null,"Flour, Caputo Blue 00","[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,Pound,1.16
 1005362988,673,"Flour, Corn","[{'categoryId': '1066', 'percentAllocation': 100.0}]",2,False,Pound,2.2
 830935810,null,"Flour, Corn Blue","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Each,5.0
-662164050,410,"Flour, Semolina","[{'categoryId': '1066', 'percentAllocation': 100.0}]",3,False,Pound,0.86
+662164050,410,"Flour, Semolina","[{'categoryId': '1066', 'percentAllocation': 100.0}]",3,False,Pound,1.2
 798077597,null,"Flowers, Edible - Kitchen","[{'categoryId': '1065', 'percentAllocation': 100.0}]",3,False,Clam (Container),15.5
 732483908,null,Foaming Oven Cleaner,"[{'categoryId': '1080', 'percentAllocation': 100.0}]",1,False,Gallon,17.5
 882120025,null,Foil Alum 18x1000 ft,"[{'categoryId': '1077', 'percentAllocation': 100.0}]",1,False,Each,47.45
@@ -1506,6 +1508,8 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 690366984,null,Hirsch The Horizon Bourbon,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),30.7
 845589242,null,Hokkaido Minami Kaya,"[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,Each,13.99
 806342031,null,Holder Scoop 7X8 Wire For Large Scoop,"[{'categoryId': '1088', 'percentAllocation': 100.0}]",1,False,Each,5.62
+1128109709,null,Holiday Vodka,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),20.0
+1128110598,null,Homage Tristeza German Pilsner 12oz Can,"[{'categoryId': '1071', 'percentAllocation': 100.0}]",1,False,Can (12 Fluid Ounces),2.0
 909242865,752,"Hominy, Can","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Can,9.43
 679325035,23,Honey,"[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Pound,8.37
 676368339,249,Honeydew,"[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Each,3.57
@@ -1904,7 +1908,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 1041837207,null,Lustau Vermut Rojo,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),16.0
 670740185,607187705,Luxardo Bitter Bianco,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (750 Milliliters),20.0
 895974944,null,Luxardo Del Santo Liqueur,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (750 Milliliters),22.0
-751882461,607187706,Luxardo Di Saschira Amaretto,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),30.53
+751882461,607187706,Luxardo Di Saschira Amaretto,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (750 Milliliters),30.83
 669294952,607187707,Luxardo Espresso Liqueur,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),17.0
 662166919,201212577,Luxardo Maraschino Liqueur,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (750 Milliliters),34.0
 669287758,1384,"Lychee, In Syrup","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Each,2.79
@@ -2095,7 +2099,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 672375744,218,"Milk, Condensed","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Can,3.04
 672372142,435,"Milk, Evaporated","[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False, (Can),2.79
 779190094,379,"Milk, Oat","[{'categoryId': '1068', 'percentAllocation': 100.0}]",1,False,Each,3.16
-661746376,34,"Milk, Whole","[{'categoryId': '1068', 'percentAllocation': 100.0}]",3,False,Gallon,5.61
+661746376,34,"Milk, Whole","[{'categoryId': '1068', 'percentAllocation': 100.0}]",3,False,Gallon,5.62
 669197462,563480688,Miller High Life 12oz Bottle,"[{'categoryId': '1071', 'percentAllocation': 100.0}]",4,False,Bottle (12 Fluid Ounces),0.7
 664581471,null,Mint - Bar,"[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False,Mint - Bar (Pound),11.5
 679336683,51,"Mint, Fresh","[{'categoryId': '1065', 'percentAllocation': 100.0}]",2,False,Ounce,0.46
@@ -2120,7 +2124,8 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 914296947,null,Montenidoli Toscana Bianco Il Templare 2020,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),26.0
 703197918,null,Montenidoli Tradizionale Vernaccia di San Gimignano 2022,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),17.33
 686753275,null,Montenidoli Vernaccia,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,750 Milliliters,17.33
-671279621,null,Montepulciano D'Abruzzo Riserva Praesidium 2019,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),30.0
+671279621,null,Montepulciano D'Abruzzo Riserva Praesidium 2019,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),32.33
+1128108598,null,Monte Santoccio Valpolicella Classico Superiore 2021,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),15.33
 775685516,null,Montesecondo Rosso del Rospo 2021,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),25.0
 717938763,null,Monthly dishwasher Charges - Chembro,"[{'categoryId': '1281077', 'percentAllocation': 100.0}]",1,False,Other,120.0
 777417149,null,Monthly Dishwasher CMA 180 Rental; December 2024,"[{'categoryId': '1281077', 'percentAllocation': 100.0}]",1,False,Other,150.0
@@ -2271,12 +2276,12 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 1014790838,607190015,Nux Walnut Liqueur,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),34.0
 685068654,607190037,Oban 14yr Scotch,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),78.18
 1070484255,null,Occhipinti SP68 Bianco IGT 2024,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle,21.0
-672381154,201212616,Ocho Plata Tequila,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",3,False,Bottle (Liter),47.17
+672381154,201212616,Ocho Plata Tequila,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",3,False,Bottle (Liter),41.57
 712223889,471,Octopus,"[{'categoryId': '1064', 'percentAllocation': 100.0}]",1,False,Pound,7.75
 1021225317,null,"Oil, Blend 51/49","[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,Liter,8.7
 1074396894,1691,"Oil, Blend 75/25","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Pound,1.33
 855556488,708,"Oil, Coconut","[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,Each,0.0
-662183951,142712987,"Oil, Fryer","[{'categoryId': '20000', 'percentAllocation': 100.0}]",4,False,Pound,1.07
+662183951,142712987,"Oil, Fryer","[{'categoryId': '20000', 'percentAllocation': 100.0}]",4,False,Pound,1.12
 661746651,640,"Oil, Grapeseed","[{'categoryId': '1066', 'percentAllocation': 100.0}]",2,False,Gallon,24.98
 662187929,28,"Oil, Olive Extra Virgin","[{'categoryId': '1066', 'percentAllocation': 100.0}]",11,False,Can,41.25
 671277320,228,"Oil, Sesame","[{'categoryId': '1073', 'percentAllocation': 100.0}]",2,False,Gallon,55.38
@@ -2394,11 +2399,12 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 668381774,null,Parker's Heritage Single Barrel 11yr,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,450.0
 671278846,null,Park House Orange Wine,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",8,False,Bottle (750 Milliliters),15.5
 673946778,null,Park House Red Wine,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",8,False,Bottle (750 Milliliters),15.1
-871728111,null,Park House White Wine,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",7,False,Bottle (Liter),16.8
+871728111,null,Park House White Wine,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",7,False,Bottle (Liter),12.67
 684924295,null,Parking Charges- One Stop Refrigeration,"[{'categoryId': '1113', 'percentAllocation': 100.0}]",0,False,Other,8.0
-662164146,41,"Parsley, Fresh","[{'categoryId': '1065', 'percentAllocation': 100.0}]",4,False,Case,24.73
+662164146,41,"Parsley, Fresh","[{'categoryId': '1065', 'percentAllocation': 100.0}]",4,False,Case,24.74
 678591502,null,Parts - JT Plumbing,"[{'categoryId': '1114', 'percentAllocation': 100.0}]",1,False,Other,50.0
 935434410,null,Party Ice 20LBS,"[{'categoryId': '17974', 'percentAllocation': 100.0}]",1,False,20 Pounds,10.0
+1127272898,null,Pascal Janvier Coteaux Du Loir Cuvée Du Rosier Rouge 2022,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),13.83
 1107449789,null,Pascal Janvier Cuvee De Rosier Rouge,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),0.0
 1035748314,null,Pascal Janvier Cuvée du Rosier Coteaux du Loir 2024,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),13.83
 664584497,null,Pasilla - Bar,"[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False, (Pound),3.62
@@ -2412,7 +2418,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 763771972,1229,"Paste, Quince","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Each,39.34
 909694966,297,"Paste, Tahini","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Each,12.04
 669214340,823,"Paste, Tamarind","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Each,8.84
-662166111,162,"Paste, Tomato","[{'categoryId': '1066', 'percentAllocation': 100.0}]",2,False,Can,21.0
+662166111,162,"Paste, Tomato","[{'categoryId': '1066', 'percentAllocation': 100.0}]",2,False,Can,10.11
 700467487,439,"Paste, Vanilla Bean","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Bottle,85.28
 1043723924,null,"Paste, Yuzu Blue","[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,Pound,14.32
 686731045,null,Pasubio Amaro,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,750 Milliliters,23.0
@@ -2451,7 +2457,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 1020897655,834726738,"Peppers, Morita Dried","[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,Pound,8.3
 679335139,750,"Peppers, Pasilla","[{'categoryId': '1065', 'percentAllocation': 100.0}]",4,False,Pound,4.12
 662164167,796,"Peppers, Peppadew","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Kilogram,10.51
-661746429,44,"Peppers, Red","[{'categoryId': '1065', 'percentAllocation': 100.0}]",4,False,Case,43.39
+661746429,44,"Peppers, Red","[{'categoryId': '1065', 'percentAllocation': 100.0}]",4,False,Case,15.54
 1021228185,371,"Peppers, Red Fresno","[{'categoryId': '1065', 'percentAllocation': 100.0}]",0,False,Pound,6.0
 679335746,318,"Peppers, Serrano","[{'categoryId': '1065', 'percentAllocation': 100.0}]",2,False,Pound,1.59
 663634596,458,"Peppers, Shishito","[{'categoryId': '1073', 'percentAllocation': 100.0}]",2,False,Pound,2.74
@@ -2475,7 +2481,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 1120400394,null,Pierazzuoli Chianti Montalbano Riserva 2021,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),20.25
 685049737,201212635,Pierre Ferrand Dry Curacao,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",3,False,750 Milliliters,18.44
 980697716,null,Pierre Morey Bourgogne Pinot Noir 2022,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),0.0
-669209120,null,Pierre Vallet VS Cognac,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (750 Milliliters),24.5
+669209120,null,Pierre Vallet VS Cognac,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (750 Milliliters),26.67
 669210660,null,Pilot Project Donna's Pickle Beer 12oz Can,"[{'categoryId': '1071', 'percentAllocation': 100.0}]",3,False,Can (12 Fluid Ounces),1.63
 686749700,201212636,Pimm's,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),27.45
 662165873,76,"Pineapple, Fresh","[{'categoryId': '1073', 'percentAllocation': 100.0}]",3,False,Each,6.44
@@ -2522,7 +2528,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 662191861,224,"Potatoes, Fingerling","[{'categoryId': '1065', 'percentAllocation': 100.0}]",2,False,Pound,1.5
 662162865,35,"Potatoes, Idaho","[{'categoryId': '1065', 'percentAllocation': 100.0}]",6,False,Pound,0.36
 848716193,870,"Potatoes, Kennebec","[{'categoryId': '1065', 'percentAllocation': 100.0}]",1,False,Pound,0.57
-662193168,1065,"Potatoes, Sliced","[{'categoryId': '1065', 'percentAllocation': 100.0}]",3,False,Pound,2.18
+662193168,1065,"Potatoes, Sliced","[{'categoryId': '1065', 'percentAllocation': 100.0}]",3,False,Pound,2.33
 775407226,130,"Potatoes, Sweet","[{'categoryId': '1065', 'percentAllocation': 100.0}]",2,False,Pound,2.0
 849856747,184,"Potatoes, Yukon","[{'categoryId': '1065', 'percentAllocation': 100.0}]",1,False,Pound,0.62
 678934915,733,Potato Starch,"[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Pound,2.67
@@ -2707,7 +2713,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 775387094,201212652,Rittenhouse Rye,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),23.02
 669212840,null,Ritual Zero Proof Gin,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),19.76
 685061987,null,Ritual Zero Proof Rum,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,750 Milliliters,19.76
-685061389,null,Ritual Zero Proof Tequila,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),21.1
+685061389,null,Ritual Zero Proof Tequila,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),19.76
 669168591,625396420,Ritual Zero Proof  Whisky,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Bottle (750 Milliliters),19.76
 672372009,null,"Riviera (2"" x2"" x 2"")","[{'categoryId': '1073', 'percentAllocation': 100.0}]",1,False,Pack,36.0
 1002288672,null,R Jelinek Fernet Liqueur,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (700 Milliliters),22.75
@@ -2722,7 +2728,8 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 1066855631,1222,"Roe, Salmon","[{'categoryId': '1064', 'percentAllocation': 100.0}]",2,False,Pound,44.0
 663615092,null,Rolfshark Lambrusco Rosato,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",4,False,Bottle (750 Milliliters),13.0
 757277969,null,Romana Amaro Liqueur,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),23.27
-740991481,null,Ronco Severo Pinot Grigio 2019,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),29.0
+1128109469,null,Ronchi di Cialla Friulano 2024,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),14.1
+740991481,null,Ronco Severo Pinot Grigio 2019,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),0.35
 1014908420,null,Ronco Severo Pinot Grigio Ramato 2022,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),16.9
 672331472,null,Ron Zacapa Centenario - 23 Year Old,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,39.55
 875916373,null,Rosabella Rosato Vajra 2024,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),14.1
@@ -2771,7 +2778,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 733982688,null,"Sauce, Hot Tapatio 5oz","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Bottle,1.69
 1097013905,960,"Sauce, Nacho Cheese","[{'categoryId': '1068', 'percentAllocation': 100.0}]",1,False,Nacho Cheese (Rosarito) (Can),18.3
 898205945,null,"Sauce, Okonomiyaki","[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,"Sauce, Okonomiyaki (Container)",24.98
-1055870279,686,"Sauce, Oyster","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Pound,2.96
+1055870279,686,"Sauce, Oyster","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Pound,2.97
 670720892,66,"Sauce, Soy","[{'categoryId': '1066', 'percentAllocation': 100.0}]",3,False,Gallon,44.2
 1102583294,null,"Sauce, Soy Tamari White","[{'categoryId': '1066', 'percentAllocation': 100.0}]",0,False,Bottle,48.25
 838322327,915,"Sauce, Soy White","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Each,14.44
@@ -2813,7 +2820,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 679991258,738,"Seasoning, Tajin","[{'categoryId': '1073', 'percentAllocation': 100.0}]",2,False,Each,11.78
 868793956,1601,"Seaweed, Dried","[{'categoryId': '1066', 'percentAllocation': 100.0}]",2,False,Each,0.3
 1052345190,null,Security Alarm Monitoring Service Charges - Bay Alarm Company,"[{'categoryId': '1108', 'percentAllocation': 100.0}]",0,False,Other,202.35
-874151504,null,Security Charges,"[{'categoryId': '1108', 'percentAllocation': 100.0}]",1,False,Other,495.0
+874151504,null,Security Charges,"[{'categoryId': '1108', 'percentAllocation': 100.0}]",1,False,Other,1138.5
 1107445364,null,Selbach Oster Omg Riesling,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),0.0
 1039939314,null,Selbach-Oster Riesling Trocken 2023,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),15.0
 1075858605,null,Sencha Tea,"[{'categoryId': '1073', 'percentAllocation': 100.0}]",0,False,0.5 Pounds,34.95
@@ -3177,7 +3184,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 1120224941,null,Tepanal Ancestral Mexicano Mezcal,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),104.0
 685072730,201212615,Tequila Ocho Anejo,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,52.3
 672342927,null,Tequila Ocho Extra Anejo,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),58.89
-683488901,201212617,Tequila Ocho Reposado,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Liter,41.99
+683488901,201212617,Tequila Ocho Reposado,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",2,False,Liter,50.68
 987046478,null,Tetote Acorn Mug Keishugam,"[{'categoryId': '1090', 'percentAllocation': 100.0}]",0,False,Each,30.0
 672343252,null,The Balvenie Single Malt Scotch Whiskey 14YR 6/750ML,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,68.3
 683501762,null,The Botanist Islay Cask Rested Gin,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Fluid Ounces,20.0
@@ -3186,7 +3193,7 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 916640586,null,The Gift 2024,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),7.75
 821304882,null,The Gift '23,"[{'categoryId': '1074', 'percentAllocation': 100.0}]",0,False,Bottle (750 Milliliters),31.0
 675262030,null,"The Lucky Cat ""Mint"" Blended Japanese Whiskey","[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,700 Milliliters,80.0
-669195209,607187743,The Macallan 18 Year Old - Sherry Oak,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,750 Milliliters,320.88
+669195209,607187743,The Macallan 18 Year Old - Sherry Oak,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,750 Milliliters,1666.62
 988093589,null,The Pathfinder Hemp And Root Non Alcoholic,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",1,False,Bottle (700 Milliliters),25.0
 672346335,null,The Yuza Single Malt First Edition 2022,"[{'categoryId': '1072', 'percentAllocation': 100.0}]",0,False,700 Milliliters,430.0
 908000175,null,Thomas Henry Spicy Ginger Beer 750ML,"[{'categoryId': '1075', 'percentAllocation': 100.0}]",1,False,Bottle (750 Milliliters),2.59
@@ -3214,8 +3221,8 @@ companyConceptProductId,centralProductId,productName,categories,itemCount,taxExe
 662161251,104,"Tomatoes, Cherry","[{'categoryId': '1065', 'percentAllocation': 100.0}]",8,False,Pound,3.71
 692083682,4,"Tomatoes, Fresh","[{'categoryId': '1065', 'percentAllocation': 100.0}]",3,False,Case,55.0
 671275447,221,"Tomatoes, Heirloom","[{'categoryId': '1065', 'percentAllocation': 100.0}]",6,False,Case,27.15
-662184005,171,"Tomatoes, Roma","[{'categoryId': '1065', 'percentAllocation': 100.0}]",4,False,Case,27.14
-662164922,115,"Tomatoes, Whole Can","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Can,5.71
+662184005,171,"Tomatoes, Roma","[{'categoryId': '1065', 'percentAllocation': 100.0}]",4,False,Case,21.14
+662164922,115,"Tomatoes, Whole Can","[{'categoryId': '1066', 'percentAllocation': 100.0}]",1,False,Can,5.72
 729132229,null,"Tong 12"" Hvy Duty S/s Hinge Edlund","[{'categoryId': '1088', 'percentAllocation': 100.0}]",1,False,Each,9.7
 763639700,null,"Tong 12"" Utlity Xtra Heavy Thunder","[{'categoryId': '1088', 'percentAllocation': 100.0}]",1,False,Each,2.72
 1053690371,null,Tonic Water 200ML,"[{'categoryId': '1075', 'percentAllocation': 100.0}]",0,False,Bottle,4.97

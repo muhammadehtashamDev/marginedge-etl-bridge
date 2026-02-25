@@ -1,28 +1,37 @@
-import requests
-from app.utils.config import settings
+import httpx
 from typing import Any, Dict, List
+from app.utils.config import settings
+from app.utils.logger import logger
+from app.utils.http_client import safe_get
 
-def get_all_pages(endpoint: str, params: Dict[str, Any], data_key: str) -> List[dict]:
-    """
-    Generic function to handle MarginEdge pagination.
-    'data_key' is the JSON key like 'categories' or 'orders'.
-    """
+async def get_all_pages(endpoint: str, params: Dict[str, Any], data_key: str) -> List[dict]:
+
     all_data = []
-    headers = {"X-Api-Key": settings.MARGIN_EDGE_API_KEY, "Accept": "application/json"}
 
-    while True:
-        response = requests.get(f"{settings.BASE_URL}/{endpoint}", headers=headers, params=params)
-        response.raise_for_status()
-        json_data = response.json()
+    headers = {
+        "X-Api-Key": settings.MARGIN_EDGE_API_KEY,
+        "Accept": "application/json"
+    }
 
-        # Add current page data to our list
-        all_data.extend(json_data.get(data_key, []))
+    timeout = httpx.Timeout(120.0, connect=30.0)
 
-        # Check if there is a next page
-        next_page = json_data.get("nextPage")
-        if next_page:
-            params["nextPage"] = next_page
-        else:
-            break
+    async with httpx.AsyncClient(timeout=timeout) as client:
+
+        while True:
+            url = f"{settings.BASE_URL}/{endpoint}"
+
+            response = await safe_get(client, url, headers, params)
+
+            json_data = response.json()
+            page_data = json_data.get(data_key, [])
+
+            all_data.extend(page_data)
+            logger.info(f"{endpoint} → fetched {len(page_data)} records")
+
+            next_page = json_data.get("nextPage")
+            if next_page:
+                params["nextPage"] = next_page
+            else:
+                break
 
     return all_data

@@ -1,0 +1,82 @@
+categoryId,categoryName,categoryType,accountingCode
+1088,Accounting & Bookkeeping,OTHER,6505
+1090,Advertising,OTHER,6260
+1092,Bank Charges & Fees,OTHER,6560
+1094,Bar Groceries,LIQUOR,5116
+1096,Bar Smallwares,OTHER,6155
+1098,Beer,BEER,5110
+1100,BOH Labor,LABOR,5209
+1102,Bottled Beer,BEER,5112
+1104,Bread,FOOD,5105
+1106,CAM,OTHER,7106
+1108,Charity & Donations,OTHER,6545
+1110,Cleaning Services,OTHER,6120
+1112,Cleaning Supplies,OTHER,6115
+1114,Consumables,OTHER,6125
+1116,Dairy,FOOD,5106
+1118,Decorations,OTHER,6130
+1120,Design and Production,OTHER,6515
+1122,Distributions,OTHER,3205
+1124,Draught Beer,BEER,5111
+1126,Dues and Subscriptions,OTHER,6550
+1128,Due to/from Hillhurst,OTHER,1710
+1130,Equipment Rental,OTHER,6110
+1132,Florals,OTHER,6132
+1134,FOH Admin,LABOR,5215
+1136,FOH - Bar Flores,LABOR,5201
+1138,FOH - Donna's,LABOR,5203
+1140,FOH Janitorial,LABOR,5210
+1142,FOH Labor,LABOR,5205
+1144,FOH - Lowboy,LABOR,5202
+1146,FOH Management,LABOR,6100
+1148,FOH - To Go Window,LABOR,5204
+1150,Fuel,OTHER,6725
+1152,Glassware,OTHER,6165
+1154,Grocery,FOOD,5104
+1156,Keg Deposits,BEER,1805
+107580,Kitchen Machinery & Equipment,OTHER,1515
+1158,Kitchen Smallwares,OTHER,6150
+1160,"Laundry, Linens, & Uniforms",OTHER,6135
+1162,Legal,OTHER,6520
+1164,Liability Insurance,OTHER,6590
+1166,License & Permits,OTHER,6570
+1168,Liquor,LIQUOR,5115
+1170,Marketing & Promotions,OTHER,6257
+1172,Meals & Entertainment,OTHER,6710
+1174,Meat & Poultry,FOOD,5101
+1176,Music & DJ,OTHER,6305
+1178,Non-alcoholic,NA_BEVERAGES,5125
+1180,Office Supplies,OTHER,6575
+1182,Operating Supplies,OTHER,6574
+1184,"Packaging, COGS",OTHER,5135
+1186,Packaging Supplies,OTHER,6118
+1188,Parking,OTHER,6720
+1190,Pest Control,OTHER,6820
+1192,Phone and Internet,OTHER,6605
+1194,Postage & Shipping,OTHER,6585
+1196,Produce,FOOD,5103
+1198,Propane,OTHER,7150
+1200,Property/RE Tax,OTHER,7115
+1202,Rent/Lease,OTHER,7105
+1204,"Repair & Maintenance, Equipment",OTHER,6810
+1206,"Repair & Maintenance, Facility",OTHER,6815
+1208,Research & Development,OTHER,6450
+1210,Retail,OTHER,5130
+1212,Seafood,FOOD,5102
+1214,Security,OTHER,6610
+1216,"Shipping, Freight and Delivery",OTHER,5195
+1218,Small Bar Equipment,OTHER,6145
+1220,Small Computer Equipment & Supplies,OTHER,6535
+1222,Small Kitchen Equipment,OTHER,6140
+1224,Software Subscriptions,OTHER,6537
+1226,"Stationary, Printing & Reproduction",OTHER,6580
+1228,Storage,OTHER,7145
+1230,Tableware,OTHER,6160
+1232,Training,OTHER,5355
+1234,Travel,OTHER,6705
+1236,Utilities - Telephone / Internet,OTHER,6605
+1238,"Utility, Electricity",OTHER,7125
+1240,"Utility, Gas",OTHER,7130
+1242,"Utility, Trash Removal",OTHER,7135
+1244,"Utility, Water & Sewage",OTHER,7140
+1246,Wine,WINE,5120
