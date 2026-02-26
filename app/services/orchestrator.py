@@ -1,8 +1,11 @@
-from app.services.extractor import get_all_pages
-from app.services.transformer import process_and_save
-from app.utils.logger import logger
+import asyncio
+
 import httpx
+
+from app.services.extractor import get_all_pages
+from app.services.transformer import process_and_save, process_and_save_order_details
 from app.utils.config import settings
+from app.utils.logger import logger
 
 async def run_full_etl(startDate: str, endDate: str):
 
@@ -60,38 +63,61 @@ async def run_full_etl(startDate: str, endDate: str):
         summary["orders"] += len(orders)
         process_and_save(orders, f"orders_{restaurant_id}")
 
+        # Fetch all order details for this restaurant and save them in a single CSV.
+        # We do this concurrently for efficiency, while still skipping bad/missing orders.
         async with httpx.AsyncClient() as client:
-            for order in orders:
-                order_id = order.get("id")
-
-                # Some orders may come back without an ID – skip them to avoid
-                # generating URLs like `/orders/None` which cause 400 errors.
-                if not order_id:
-                    logger.warning(
-                        f"Skipping order with missing 'id' for restaurant {restaurant_id}: {order}"
-                    )
-                    continue
-
+            async def fetch_order_detail(order_id: str):
                 try:
                     response = await client.get(
                         f"{settings.BASE_URL}/orders/{order_id}",
                         headers={
                             "X-Api-Key": settings.MARGIN_EDGE_API_KEY,
-                            "Accept": "application/json"
+                            "Accept": "application/json",
                         },
-                        params={"restaurantUnitId": restaurant_id}
+                        params={"restaurantUnitId": restaurant_id},
                     )
                     response.raise_for_status()
+                    return response.json()
                 except httpx.HTTPStatusError as exc:
                     logger.error(
                         f"Failed to fetch order details for order_id={order_id}, "
                         f"restaurantUnitId={restaurant_id}: {exc}"
                     )
-                    # Skip this order but continue processing the rest
+                    return None
+                except httpx.RequestError as exc:
+                    logger.error(
+                        f"Network error while fetching order details for order_id={order_id}, "
+                        f"restaurantUnitId={restaurant_id}: {exc}"
+                    )
+                    return None
+
+            tasks = []
+
+            for order in orders:
+                # The paged `/orders` API returns `orderId` (not `id`) as seen in the CSV.
+                # We still fall back to `id` just in case the schema changes.
+                order_id = order.get("orderId") or order.get("id")
+
+                # Some orders may come back without an ID – skip them to avoid
+                # generating URLs like `/orders/None` which cause 400 errors.
+                if not order_id:
+                    logger.warning(
+                        f"Skipping order with missing order identifier for restaurant {restaurant_id}: {order}"
+                    )
                     continue
 
-                process_and_save([response.json()], f"order_detail_{order_id}")
-                summary["order_details"] += 1
+                tasks.append(fetch_order_detail(order_id))
+
+            restaurant_order_details = [
+                result for result in await asyncio.gather(*tasks) if result is not None
+            ]
+
+            summary["order_details"] += len(restaurant_order_details)
+
+            # Save one CSV per restaurant with all of its order details,
+            # flattened at the line-item level.
+            if restaurant_order_details:
+                process_and_save_order_details(restaurant_order_details, restaurant_id)
 
     logger.info("Full ETL Completed Successfully")
     return summary
