@@ -5,6 +5,7 @@ import httpx
 from app.services.extractor import get_all_pages
 from app.services.transformer import process_and_save, process_and_save_order_details
 from app.utils.config import settings
+from app.utils.http_client import safe_get
 from app.utils.logger import logger
 
 async def run_full_etl(startDate: str, endDate: str):
@@ -26,6 +27,7 @@ async def run_full_etl(startDate: str, endDate: str):
 
     for restaurant in restaurants:
         restaurant_id = restaurant.get("id")
+        logger.info(f"Processing restaurantUnitId={restaurant_id}")
 
         categories = await get_all_pages(
             "categories",
@@ -60,27 +62,51 @@ async def run_full_etl(startDate: str, endDate: str):
             },
             "orders"
         )
+        logger.info(
+            f"restaurantUnitId={restaurant_id} -> orders fetched: {len(orders)} "
+            f"(startDate={startDate}, endDate={endDate})"
+        )
         summary["orders"] += len(orders)
         process_and_save(orders, f"orders_{restaurant_id}")
 
+        if not orders:
+            logger.info(
+                f"restaurantUnitId={restaurant_id} -> no orders returned; skipping order details"
+            )
+            continue
+
         # Fetch all order details for this restaurant and save them in a single CSV.
         # We do this concurrently for efficiency, while still skipping bad/missing orders.
-        async with httpx.AsyncClient() as client:
+        timeout = httpx.Timeout(120.0, connect=30.0)
+        limits = httpx.Limits(max_keepalive_connections=10, max_connections=20)
+
+        async with httpx.AsyncClient(timeout=timeout, limits=limits) as client:
+            # Limit concurrency to avoid 429s / dropped connections on large restaurants.
+            semaphore = asyncio.Semaphore(10)
+
             async def fetch_order_detail(order_id: str):
                 try:
-                    response = await client.get(
-                        f"{settings.BASE_URL}/orders/{order_id}",
-                        headers={
-                            "X-Api-Key": settings.MARGIN_EDGE_API_KEY,
-                            "Accept": "application/json",
-                        },
-                        params={"restaurantUnitId": restaurant_id},
-                    )
-                    response.raise_for_status()
-                    return response.json()
+                    async with semaphore:
+                        response = await safe_get(
+                            client,
+                            f"{settings.BASE_URL}/orders/{order_id}",
+                            headers={
+                                "X-Api-Key": settings.MARGIN_EDGE_API_KEY,
+                                "Accept": "application/json",
+                            },
+                            params={"restaurantUnitId": restaurant_id},
+                        )
+                        return response.json()
                 except httpx.HTTPStatusError as exc:
                     logger.error(
                         f"Failed to fetch order details for order_id={order_id}, "
+                        f"restaurantUnitId={restaurant_id}: {exc}"
+                    )
+                    return None
+                except httpx.HTTPError as exc:
+                    # safe_get may raise other httpx errors; treat them as a per-order failure.
+                    logger.error(
+                        f"HTTP error while fetching order details for order_id={order_id}, "
                         f"restaurantUnitId={restaurant_id}: {exc}"
                     )
                     return None
@@ -113,6 +139,9 @@ async def run_full_etl(startDate: str, endDate: str):
             ]
 
             summary["order_details"] += len(restaurant_order_details)
+            logger.info(
+                f"restaurantUnitId={restaurant_id} -> order details fetched: {len(restaurant_order_details)}"
+            )
 
             # Save one CSV per restaurant with all of its order details,
             # flattened at the line-item level.

@@ -45,23 +45,42 @@ def process_and_save_order_details(
     if not order_details:
         return None
 
-    # Dynamically collect all order-level fields to keep as metadata
-    meta_keys = sorted(
-        {
-            key
-            for order in order_details
-            for key in order.keys()
-            if key != "lineItems"
-        }
-    )
+    # Build rows manually so that orders with empty/missing `lineItems` still appear
+    # (at least one row per order).
+    rows: List[Dict[str, Any]] = []
 
-    # Flatten so that each line item becomes a row, with order-level metadata attached
-    df = pd.json_normalize(
-        order_details,
-        record_path="lineItems",
-        meta=meta_keys,
-        errors="ignore",
-    )
+    for order in order_details:
+        order_meta = {k: v for k, v in order.items() if k != "lineItems"}
+        order_meta["restaurantUnitId"] = restaurant_id
+
+        # Helpful derived fields for auditing/completeness checks
+        attachments = order_meta.get("attachments")
+        if isinstance(attachments, list):
+            order_meta["attachments_count"] = len(attachments)
+        else:
+            order_meta["attachments_count"] = 0 if attachments is None else None
+
+        line_items = order.get("lineItems") or []
+        if not isinstance(line_items, list):
+            line_items = []
+
+        order_meta["lineItems_count"] = len(line_items)
+
+        if line_items:
+            for idx, item in enumerate(line_items):
+                row = dict(order_meta)
+                if isinstance(item, dict):
+                    # Prefix line-item fields to avoid collisions with order-level keys
+                    row.update({f"lineItem_{k}": v for k, v in item.items()})
+                row["lineItem_index"] = idx
+                rows.append(row)
+        else:
+            # Still include the order even if it has no line items
+            row = dict(order_meta)
+            row["lineItem_index"] = None
+            rows.append(row)
+
+    df = pd.DataFrame(rows)
 
     _ensure_data_dir()
 

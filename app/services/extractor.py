@@ -26,7 +26,8 @@ async def get_all_pages(endpoint: str, params: Dict[str, Any], data_key: str) ->
             page_data = json_data.get(data_key, [])
 
             all_data.extend(page_data)
-            logger.info(f"{endpoint} → fetched {len(page_data)} records")
+            # Use ASCII-friendly log text for Windows consoles that may not support Unicode.
+            logger.info(f"{endpoint} -> fetched {len(page_data)} records")
 
             next_page = json_data.get("nextPage")
             if next_page:
