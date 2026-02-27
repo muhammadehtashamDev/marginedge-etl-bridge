@@ -15,6 +15,8 @@ async def run_full_etl(startDate: str, endDate: str):
         "categories": 0,
         "products": 0,
         "vendors": 0,
+        "vendor_items": 0,
+        "vendor_packaging": 0,
         "orders": 0,
         "order_details": 0
     }
@@ -52,6 +54,95 @@ async def run_full_etl(startDate: str, endDate: str):
         )
         summary["vendors"] += len(vendors)
         process_and_save(vendors, f"vendors_{restaurant_id}")
+
+        # ------------------------------------------------------------------
+        # Vendor items and vendor item packaging (per restaurant).
+        # ------------------------------------------------------------------
+        vendor_items_all = []
+        vendor_packaging_all = []
+
+        # Reuse a single HTTP client for all vendor-item packaging calls
+        # to avoid creating too many connections.
+        timeout = httpx.Timeout(120.0, connect=30.0)
+        async with httpx.AsyncClient(timeout=timeout) as vendor_client:
+            headers = {
+                "X-Api-Key": settings.MARGIN_EDGE_API_KEY,
+                "Accept": "application/json",
+            }
+
+            for vendor in vendors:
+                vendor_id = vendor.get("id") or vendor.get("vendorId")
+                if not vendor_id:
+                    logger.warning(
+                        f"Skipping vendor with missing identifier for restaurantUnitId={restaurant_id}: {vendor}"
+                    )
+                    continue
+
+                # Fetch all vendor items for this vendor at this restaurant
+                vendor_items = await get_all_pages(
+                    f"vendors/{vendor_id}/vendorItems",
+                    {"restaurantUnitId": restaurant_id},
+                    "vendorItems",
+                )
+
+                for item in vendor_items:
+                    # Ensure some useful keys are present for downstream analysis
+                    item.setdefault("restaurantUnitId", restaurant_id)
+                    item.setdefault("vendorId", vendor_id)
+
+                vendor_items_all.extend(vendor_items)
+
+                # For each vendor item, fetch its packaging definitions.
+                # The packaging endpoint is very small per item in practice, and
+                # its pagination can behave oddly. To keep things robust and
+                # avoid noisy loops, we only fetch the *first* page and ignore
+                # any nextPage token.
+                for item in vendor_items:
+                    vendor_item_code = item.get("vendorItemCode")
+                    if not vendor_item_code:
+                        continue
+
+                    url = (
+                        f"{settings.BASE_URL}/vendors/{vendor_id}/vendorItems/"
+                        f"{vendor_item_code}/packaging"
+                    )
+                    try:
+                        response = await safe_get(
+                            vendor_client,
+                            url,
+                            headers,
+                            {"restaurantUnitId": restaurant_id},
+                        )
+                    except httpx.HTTPStatusError as exc:
+                        status = (
+                            exc.response.status_code
+                            if exc.response is not None
+                            else None
+                        )
+                        if status in (403, 404):
+                            logger.warning(
+                                f"{url} -> HTTP {status}; skipping packaging for this vendor item."
+                            )
+                            continue
+                        raise
+
+                    data = response.json()
+                    packagings = data.get("packagings", []) or []
+
+                    for pkg in packagings:
+                        pkg.setdefault("restaurantUnitId", restaurant_id)
+                        pkg.setdefault("vendorId", vendor_id)
+                        pkg.setdefault("vendorItemCode", vendor_item_code)
+
+                    vendor_packaging_all.extend(packagings)
+
+        summary["vendor_items"] += len(vendor_items_all)
+        summary["vendor_packaging"] += len(vendor_packaging_all)
+
+        if vendor_items_all:
+            process_and_save(vendor_items_all, f"vendor_items_{restaurant_id}")
+        if vendor_packaging_all:
+            process_and_save(vendor_packaging_all, f"vendor_packaging_{restaurant_id}")
 
         orders = await get_all_pages(
             "orders",
