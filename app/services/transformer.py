@@ -34,6 +34,7 @@ def process_and_save(data: Iterable[dict], resource_name: str) -> str | None:
 def process_and_save_order_details(
     order_details: List[Dict[str, Any]],
     restaurant_id: str,
+    restaurant_name: str = "unknown",
 ) -> str | None:
     """
     Transform a list of order-detail payloads (each containing `lineItems`)
@@ -84,8 +85,9 @@ def process_and_save_order_details(
 
     _ensure_data_dir()
 
+    restaurant_name = restaurant_name.replace(" ", "_").replace("/", "_")
     filename = (
-        f"data/order_details_{restaurant_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        f"data/order_details_{restaurant_id}_{restaurant_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     )
     df.to_csv(filename, index=False)
     return filename
