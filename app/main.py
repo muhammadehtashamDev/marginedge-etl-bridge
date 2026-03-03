@@ -45,7 +45,10 @@ async def sync_full(
         True, description="Include vendors CSVs per restaurant"
     ),
     include_vendor_items: bool = Query(
-        True, description="Include vendor items and packaging CSVs"
+        True, description="Include vendor items CSVs per restaurant"
+    ),
+    include_vendor_packaging: bool = Query(
+        True, description="Include vendor item packaging CSVs per restaurant"
     ),
     include_orders: bool = Query(
         True, description="Include orders CSVs per restaurant"
@@ -68,6 +71,7 @@ async def sync_full(
                     include_products=include_products,
                     include_vendors=include_vendors,
                     include_vendor_items=include_vendor_items,
+                    include_vendor_packaging=include_vendor_packaging,
                     include_orders=include_orders,
                     include_order_details=include_order_details,
                 )

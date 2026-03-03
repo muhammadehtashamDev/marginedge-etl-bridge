@@ -17,6 +17,7 @@ async def run_full_etl(
     include_products: bool = True,
     include_vendors: bool = True,
     include_vendor_items: bool = True,
+    include_vendor_packaging: bool = True,
     include_orders: bool = True,
     include_order_details: bool = True,
 ):
@@ -66,7 +67,7 @@ async def run_full_etl(
             process_and_save(products, f"products_{restaurant_id}_{restaurant_name}")
 
         vendors = []
-        if include_vendors or include_vendor_items:
+        if include_vendors or include_vendor_items or include_vendor_packaging:
             vendors = await get_all_pages(
                 "vendors",
                 {"restaurantUnitId": restaurant_id},
@@ -82,7 +83,7 @@ async def run_full_etl(
         vendor_items_all = []
         vendor_packaging_all = []
 
-        if include_vendor_items and vendors:
+        if (include_vendor_items or include_vendor_packaging) and vendors:
             # Reuse a single HTTP client for all vendor-item packaging calls
             # to avoid creating too many connections.
             timeout = httpx.Timeout(120.0, connect=30.0)
@@ -119,6 +120,8 @@ async def run_full_etl(
                     # its pagination can behave oddly. To keep things robust and
                     # avoid noisy loops, we only fetch the *first* page and ignore
                     # any nextPage token.
+                    if not include_vendor_packaging:
+                        continue
                     for item in vendor_items:
                         vendor_item_code = item.get("vendorItemCode")
                         if not vendor_item_code:
@@ -161,16 +164,16 @@ async def run_full_etl(
         summary["vendor_items"] += len(vendor_items_all)
         summary["vendor_packaging"] += len(vendor_packaging_all)
 
-        if include_vendor_items:
-            if vendor_items_all:
-                process_and_save(
-                    vendor_items_all, f"vendor_items_{restaurant_id}_{restaurant_name}"
-                )
-            if vendor_packaging_all:
-                process_and_save(
-                    vendor_packaging_all,
-                    f"vendor_packaging_{restaurant_id}_{restaurant_name}",
-                )
+        if include_vendor_items and vendor_items_all:
+            process_and_save(
+                vendor_items_all, f"vendor_items_{restaurant_id}_{restaurant_name}"
+            )
+
+        if include_vendor_packaging and vendor_packaging_all:
+            process_and_save(
+                vendor_packaging_all,
+                f"vendor_packaging_{restaurant_id}_{restaurant_name}",
+            )
 
         orders = []
         if include_orders or include_order_details:
