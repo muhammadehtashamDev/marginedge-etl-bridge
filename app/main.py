@@ -1,99 +1,92 @@
-import requests
-from fastapi import FastAPI, Query, HTTPException
-from pydantic import BaseModel
-from typing import Optional, List
-from app.services.extractor import get_all_pages
-from app.services.transformer import process_and_save
-from app.utils.config import settings
+from fastapi import FastAPI, BackgroundTasks, Query, HTTPException, Depends
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.openapi.docs import get_swagger_ui_html
+import secrets
+import asyncio
+from app.services.orchestrator import run_full_etl
+from app.utils.logger import logger
 
-app = FastAPI(title="MarginEdge ETL Master")
+app = FastAPI(
+    title="MarginEdge ETL Master",
+    version="2.0",
+    description="Production Level ETL Orchestrator"
+)
 
-class SyncResponse(BaseModel):
-    status: str
-    records: int
-    file: Optional[str]
+# --- AUTH SETUP ---
+security = HTTPBasic()
+AUTHORIZED_USERS = {
+    "admin": "supersecretpassword"  # Change this to your secure credentials
+}
 
-def handle_etl(endpoint: str, params: dict, data_key: str, file_prefix: str) -> SyncResponse:
+def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
+    correct_password = AUTHORIZED_USERS.get(credentials.username)
+    if not correct_password or not secrets.compare_digest(credentials.password, correct_password):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    return credentials.username
+
+# --- CONCURRENCY LOCK ---
+etl_lock = asyncio.Lock()
+
+@app.post("/sync/full", tags=["Master ETL"])
+async def sync_full(
+    background_tasks: BackgroundTasks,
+    startDate: str = Query(..., description="Start Date (YYYY-MM-DD)"),
+    endDate: str = Query(..., description="End Date (YYYY-MM-DD)"),
+    include_restaurants: bool = Query(
+        True, description="Include restaurant units CSV"
+    ),
+    include_categories: bool = Query(
+        True, description="Include categories CSVs per restaurant"
+    ),
+    include_products: bool = Query(
+        True, description="Include products CSVs per restaurant"
+    ),
+    include_vendors: bool = Query(
+        True, description="Include vendors CSVs per restaurant"
+    ),
+    include_vendor_items: bool = Query(
+        True, description="Include vendor items CSVs per restaurant"
+    ),
+    include_vendor_packaging: bool = Query(
+        True, description="Include vendor item packaging CSVs per restaurant"
+    ),
+    include_orders: bool = Query(
+        True, description="Include orders CSVs per restaurant"
+    ),
+    include_order_details: bool = Query(
+        True, description="Include order-details CSVs per restaurant"
+    ),
+    user: str = Depends(authenticate),
+):
+    if etl_lock.locked():
+        raise HTTPException(status_code=429, detail="ETL process already running. Please wait until it completes.")
     try:
-        data = get_all_pages(endpoint, params, data_key)
-        file = process_and_save(data, file_prefix)
-        return SyncResponse(status="Complete", records=len(data), file=file)
+        async def locked_etl():
+            async with etl_lock:
+                await run_full_etl(
+                    startDate=startDate,
+                    endDate=endDate,
+                    include_restaurants=include_restaurants,
+                    include_categories=include_categories,
+                    include_products=include_products,
+                    include_vendors=include_vendors,
+                    include_vendor_items=include_vendor_items,
+                    include_vendor_packaging=include_vendor_packaging,
+                    include_orders=include_orders,
+                    include_order_details=include_order_details,
+                )
+        background_tasks.add_task(locked_etl)
+        logger.info(f"ETL Job Triggered via API by {user}")
+        return {
+            "status": "ETL Job Started",
+            "message": "Process running in background. Check logs for progress."
+        }
     except Exception as e:
+        logger.error(str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/sync/restaurants", response_model=SyncResponse)
-def sync_restaurants() -> SyncResponse:
-    """Get all restaurant units."""
-    return handle_etl("restaurantUnits", {}, "restaurants", "restaurants")
-
-@app.get("/sync/categories", response_model=SyncResponse)
-def sync_categories(restaurantUnitId: str = Query(..., description="Restaurant Unit ID")) -> SyncResponse:
-    """Get categories for a specific restaurant."""
-    return handle_etl("categories", {"restaurantUnitId": restaurantUnitId}, "categories", "categories")
-
-@app.get("/sync/orders", response_model=SyncResponse)
-def sync_orders(
-    restaurantUnitId: str = Query(..., description="Restaurant Unit ID"),
-    startDate: str = Query(..., description="Start date (YYYY-MM-DD)"),
-    endDate: str = Query(..., description="End date (YYYY-MM-DD)")
-) -> SyncResponse:
-    """Get orders within a date range."""
-    params = {"restaurantUnitId": restaurantUnitId, "startDate": startDate, "endDate": endDate}
-    return handle_etl("orders", params, "orders", "orders")
-
-@app.get("/sync/order-details/{orderId}", response_model=SyncResponse)
-def sync_order_detail(
-    orderId: str, 
-    restaurantUnitId: str = Query(..., description="Restaurant Unit ID")
-) -> SyncResponse:
-    """Get full details for a specific order."""
-    endpoint = f"orders/{orderId}"
-    try:
-        headers = {"X-Api-Key": settings.MARGIN_EDGE_API_KEY, "Accept": "application/json"}
-        response = requests.get(f"{settings.BASE_URL}/{endpoint}", headers=headers, params={"restaurantUnitId": restaurantUnitId})
-        response.raise_for_status()
-        data = [response.json()] 
-        file = process_and_save(data, f"order_detail_{orderId}")
-        return SyncResponse(status="Complete", records=1, file=file)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/sync/products", response_model=SyncResponse)
-def sync_products(restaurantUnitId: str = Query(..., description="Restaurant Unit ID")) -> SyncResponse:
-    """Get all products."""
-    return handle_etl("products", {"restaurantUnitId": restaurantUnitId}, "products", "products")
-
-@app.get("/sync/vendors", response_model=SyncResponse)
-def sync_vendors(restaurantUnitId: str = Query(..., description="Restaurant Unit ID")) -> SyncResponse:
-    """Get all vendors."""
-    return handle_etl("vendors", {"restaurantUnitId": restaurantUnitId}, "vendors", "vendors")
-
-@app.get("/sync/vendor-items", response_model=SyncResponse)
-def sync_vendor_items(
-    restaurantUnitId: str = Query(..., description="Restaurant Unit ID"),
-    vendorId: str = Query(..., description="Vendor ID")
-) -> SyncResponse:
-    """Get items for a specific vendor."""
-    endpoint = f"vendors/{vendorId}/vendorItems"
-    return handle_etl(endpoint, {"restaurantUnitId": restaurantUnitId}, "vendorItems", "vendor_items")
-
-@app.get("/sync/vendor-item-packaging", response_model=SyncResponse)
-def sync_vendor_item_packaging(
-    restaurantUnitId: str = Query(..., description="Restaurant Unit ID"),
-    vendorId: str = Query(..., description="Vendor ID"),
-    vendorItemCode: str = Query(..., description="Vendor Item Code")
-) -> SyncResponse:
-    """Get packaging options for a specific vendor item."""
-    endpoint = f"vendors/{vendorId}/vendorItems/{vendorItemCode}/packaging"
-    return handle_etl(endpoint, {"restaurantUnitId": restaurantUnitId}, "packagings", "packaging")
-
-@app.get("/sync/group-categories", response_model=SyncResponse)
-def sync_group_categories(
-    conceptId: Optional[str] = Query(None, description="Concept ID"),
-    companyId: Optional[str] = Query(None, description="Company ID")
-) -> SyncResponse:
-    """Get restaurant unit group categories."""
-    params = {}
-    if conceptId: params["conceptId"] = conceptId
-    if companyId: params["companyId"] = companyId
-    return handle_etl("restaurantUnits/groupCategories", params, "groupCategories", "group_categories")
+# --- PROTECT SWAGGER UI ---
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui(credentials: HTTPBasicCredentials = Depends(security)):
+    authenticate(credentials)
+    return get_swagger_ui_html(openapi_url=app.openapi_url, title=app.title + " - Swagger UI")
