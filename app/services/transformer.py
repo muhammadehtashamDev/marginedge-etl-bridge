@@ -33,12 +33,11 @@ def process_and_save(data: Iterable[dict], resource_name: str) -> str | None:
 
 def process_and_save_order_details(
     order_details: List[Dict[str, Any]],
-    restaurant_id: str,
-    restaurant_name: str = "unknown",
+    filename_prefix: str,
 ) -> str | None:
     """
     Transform a list of order-detail payloads (each containing `lineItems`)
-    into a line-level dataset and save a single CSV per restaurant.
+    into a line-level dataset and save to a single CSV.
 
     Each output row corresponds to one line item, with order-level metadata
     (orderId, vendor, totals, etc.) repeated on each row.
@@ -52,7 +51,6 @@ def process_and_save_order_details(
 
     for order in order_details:
         order_meta = {k: v for k, v in order.items() if k != "lineItems"}
-        order_meta["restaurantUnitId"] = restaurant_id
 
         # Helpful derived fields for auditing/completeness checks
         attachments = order_meta.get("attachments")
@@ -85,9 +83,8 @@ def process_and_save_order_details(
 
     _ensure_data_dir()
 
-    restaurant_name = restaurant_name.replace(" ", "_").replace("/", "_")
     filename = (
-        f"data/order_details_{restaurant_id}_{restaurant_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        f"data/{filename_prefix}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     )
     df.to_csv(filename, index=False)
     return filename

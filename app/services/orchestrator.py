@@ -33,6 +33,15 @@ async def run_full_etl(
         "order_details": 0,
     }
 
+    # Global collectors so we can write ONE CSV per resource
+    all_categories = []
+    all_products = []
+    all_vendors = []
+    all_vendor_items = []
+    all_vendor_packaging = []
+    all_orders = []
+    all_order_details = []
+
     logger.info("Starting Full ETL Process")
 
     restaurants = await get_all_pages("restaurantUnits", {}, "restaurants")
@@ -43,7 +52,8 @@ async def run_full_etl(
 
     for restaurant in restaurants:
         restaurant_id = restaurant.get("id")
-        restaurant_name = restaurant.get("name", "unknown").replace(" ", "_").replace("/", "_")
+        restaurant_name_raw = restaurant.get("name", "unknown")
+        restaurant_name = restaurant_name_raw.replace(" ", "_").replace("/", "_")
         logger.info(f"Processing restaurantUnitId={restaurant_id} ({restaurant_name})")
 
         categories = []
@@ -54,7 +64,10 @@ async def run_full_etl(
                 "categories",
             )
             summary["categories"] += len(categories)
-            process_and_save(categories, f"categories_{restaurant_id}_{restaurant_name}")
+            for c in categories:
+                c["restaurantUnitId"] = restaurant_id
+                c["restaurantName"] = restaurant_name_raw
+            all_categories.extend(categories)
 
         products = []
         if include_products:
@@ -64,7 +77,10 @@ async def run_full_etl(
                 "products",
             )
             summary["products"] += len(products)
-            process_and_save(products, f"products_{restaurant_id}_{restaurant_name}")
+            for p in products:
+                p["restaurantUnitId"] = restaurant_id
+                p["restaurantName"] = restaurant_name_raw
+            all_products.extend(products)
 
         vendors = []
         if include_vendors or include_vendor_items or include_vendor_packaging:
@@ -75,7 +91,10 @@ async def run_full_etl(
             )
             summary["vendors"] += len(vendors)
             if include_vendors:
-                process_and_save(vendors, f"vendors_{restaurant_id}_{restaurant_name}")
+                for v in vendors:
+                    v["restaurantUnitId"] = restaurant_id
+                    v["restaurantName"] = restaurant_name_raw
+                all_vendors.extend(vendors)
 
         # ------------------------------------------------------------------
         # Vendor items and vendor item packaging (per restaurant).
@@ -112,6 +131,7 @@ async def run_full_etl(
                         # Ensure some useful keys are present for downstream analysis
                         item.setdefault("restaurantUnitId", restaurant_id)
                         item.setdefault("vendorId", vendor_id)
+                        item.setdefault("restaurantName", restaurant_name_raw)
 
                     vendor_items_all.extend(vendor_items)
 
@@ -158,6 +178,7 @@ async def run_full_etl(
                             pkg.setdefault("restaurantUnitId", restaurant_id)
                             pkg.setdefault("vendorId", vendor_id)
                             pkg.setdefault("vendorItemCode", vendor_item_code)
+                            pkg.setdefault("restaurantName", restaurant_name_raw)
 
                         vendor_packaging_all.extend(packagings)
 
@@ -165,15 +186,10 @@ async def run_full_etl(
         summary["vendor_packaging"] += len(vendor_packaging_all)
 
         if include_vendor_items and vendor_items_all:
-            process_and_save(
-                vendor_items_all, f"vendor_items_{restaurant_id}_{restaurant_name}"
-            )
+            all_vendor_items.extend(vendor_items_all)
 
         if include_vendor_packaging and vendor_packaging_all:
-            process_and_save(
-                vendor_packaging_all,
-                f"vendor_packaging_{restaurant_id}_{restaurant_name}",
-            )
+            all_vendor_packaging.extend(vendor_packaging_all)
 
         orders = []
         if include_orders or include_order_details:
@@ -193,7 +209,10 @@ async def run_full_etl(
             summary["orders"] += len(orders)
 
             if include_orders:
-                process_and_save(orders, f"orders_{restaurant_id}_{restaurant_name}")
+                for o in orders:
+                    o["restaurantUnitId"] = restaurant_id
+                    o["restaurantName"] = restaurant_name_raw
+                all_orders.extend(orders)
 
         if not include_order_details:
             # Skip fetching order details entirely
@@ -273,12 +292,33 @@ async def run_full_etl(
                 f"restaurantUnitId={restaurant_id} -> order details fetched: {len(restaurant_order_details)}"
             )
 
-            # Save one CSV per restaurant with all of its order details,
-            # flattened at the line-item level.
             if restaurant_order_details:
-                process_and_save_order_details(
-                    restaurant_order_details, restaurant_id, restaurant_name
-                )
+                for od in restaurant_order_details:
+                    od.setdefault("restaurantUnitId", restaurant_id)
+                    od.setdefault("restaurantName", restaurant_name_raw)
+                all_order_details.extend(restaurant_order_details)
+
+    # After processing all restaurants, write ONE CSV per resource (if enabled)
+    if include_categories and all_categories:
+        process_and_save(all_categories, "categories")
+
+    if include_products and all_products:
+        process_and_save(all_products, "products")
+
+    if include_vendors and all_vendors:
+        process_and_save(all_vendors, "vendors")
+
+    if include_vendor_items and all_vendor_items:
+        process_and_save(all_vendor_items, "vendor_items")
+
+    if include_vendor_packaging and all_vendor_packaging:
+        process_and_save(all_vendor_packaging, "vendor_packaging")
+
+    if include_orders and all_orders:
+        process_and_save(all_orders, "orders")
+
+    if include_order_details and all_order_details:
+        process_and_save_order_details(all_order_details, "order_details_all")
 
     logger.info("Full ETL Completed Successfully")
     return summary
