@@ -3,7 +3,12 @@ import asyncio
 import httpx
 
 from app.services.extractor import get_all_pages
-from app.services.transformer import process_and_save, process_and_save_order_details
+from app.services.transformer import (
+    expand_products_for_csv,
+    expand_vendors_for_csv,
+    process_and_save,
+    process_and_save_order_details,
+)
 from app.utils.config import settings
 from app.utils.http_client import safe_get
 from app.utils.logger import logger
@@ -303,10 +308,12 @@ async def run_full_etl(
         process_and_save(all_categories, "categories")
 
     if include_products and all_products:
-        process_and_save(all_products, "products")
+        product_rows = expand_products_for_csv(all_products)
+        process_and_save(product_rows, "products")
 
     if include_vendors and all_vendors:
-        process_and_save(all_vendors, "vendors")
+        vendor_rows = expand_vendors_for_csv(all_vendors)
+        process_and_save(vendor_rows, "vendors")
 
     if include_vendor_items and all_vendor_items:
         process_and_save(all_vendor_items, "vendor_items")

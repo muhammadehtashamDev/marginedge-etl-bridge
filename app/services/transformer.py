@@ -13,6 +13,63 @@ def _ensure_data_dir(path: str = "data") -> None:
         os.makedirs(path)
 
 
+def expand_vendors_for_csv(vendors: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Expand vendors for CSV: replace vendorAccounts array with vendorAccountNumber column.
+    - Empty array -> one row with vendorAccountNumber empty.
+    - Multiple accounts -> one row per account, each with that account's vendorAccountNumber.
+    """
+    rows: List[Dict[str, Any]] = []
+    for v in vendors:
+        base = {k: v for k, v in v.items() if k != "vendorAccounts"}
+        accounts = v.get("vendorAccounts") or []
+        if not isinstance(accounts, list):
+            accounts = []
+        if not accounts:
+            base["vendorAccountNumber"] = ""
+            rows.append(base)
+        else:
+            for acc in accounts:
+                row = dict(base)
+                row["vendorAccountNumber"] = (
+                    acc.get("vendorAccountNumber", "") if isinstance(acc, dict) else ""
+                )
+                rows.append(row)
+    return rows
+
+
+def expand_products_for_csv(products: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Expand products for CSV: replace categories array with categoryId/percentAllocation columns.
+    - Empty array -> one row with categoryId/percentAllocation empty.
+    - Multiple categories -> one row per category.
+    """
+    rows: List[Dict[str, Any]] = []
+    for p in products:
+        base = {k: v for k, v in p.items() if k != "categories"}
+        categories = p.get("categories") or []
+        if not isinstance(categories, list):
+            categories = []
+
+        if not categories:
+            row = dict(base)
+            row["categoryId"] = ""
+            row["percentAllocation"] = ""
+            rows.append(row)
+        else:
+            for cat in categories:
+                row = dict(base)
+                if isinstance(cat, dict):
+                    row["categoryId"] = cat.get("categoryId", "")
+                    row["percentAllocation"] = cat.get("percentAllocation", "")
+                else:
+                    row["categoryId"] = ""
+                    row["percentAllocation"] = ""
+                rows.append(row)
+
+    return rows
+
+
 def process_and_save(data: Iterable[dict], resource_name: str) -> str | None:
     """
     Generic helper to flatten a list of JSON objects and save to CSV.
