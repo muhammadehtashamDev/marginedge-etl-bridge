@@ -12,7 +12,9 @@ from app.utils.logger import logger
 from app.services.transformer import (
     process_and_save_with_filename,
     process_and_save_order_details_with_filename,
+    build_order_details_rows,
 )
+from app.services.loader import insert_rows
 
 MAX_RETRIES = 3
 
@@ -164,6 +166,15 @@ async def fetch_daily_orders_and_details(target_date: date):
             orders_filename,
         )
 
+        # Also persist into PostgreSQL, attaching the same filename column
+        # that appears in the CSV so schemas stay aligned.
+        orders_rows = []
+        for o in all_orders:
+            row = dict(o)
+            row["filename"] = orders_filename
+            orders_rows.append(row)
+        insert_rows("orders", orders_rows)
+
         logger.info(
             f"Saved {len(all_orders)} orders -> data/{orders_filename}"
         )
@@ -177,6 +188,13 @@ async def fetch_daily_orders_and_details(target_date: date):
             all_order_details,
             details_filename,
         )
+
+        # Also persist into PostgreSQL using the same flattened rows
+        # that are written to the CSV so that the table matches the file.
+        flattened_details = build_order_details_rows(all_order_details)
+        for row in flattened_details:
+            row["filename"] = details_filename
+        insert_rows("order_details", flattened_details)
 
         logger.info(
             f"Saved {len(all_order_details)} order details -> data/{details_filename}"

@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 import httpx
 
@@ -8,7 +9,9 @@ from app.services.transformer import (
     expand_vendors_for_csv,
     process_and_save,
     process_and_save_order_details,
+    build_order_details_rows,
 )
+from app.services.loader import insert_rows
 from app.utils.config import settings
 from app.utils.http_client import safe_get
 from app.utils.logger import logger
@@ -54,6 +57,28 @@ async def run_full_etl(
 
     if include_restaurants:
         process_and_save(restaurants, "restaurants")
+
+        # Also persist restaurants into PostgreSQL, ensuring each restaurant
+        # is unique by its API `id` within this run. We map the API `id`
+        # into a `restaurant_id` column to avoid clashing with the synthetic
+        # SERIAL primary key created by the loader.
+        unique_by_id = {}
+        for r in restaurants:
+            rid = r.get("id")
+            if rid is None:
+                continue
+            unique_by_id[rid] = r
+
+        if unique_by_id:
+            db_rows = []
+            for r in unique_by_id.values():
+                row = dict(r)
+                if "id" in row:
+                    row["restaurant_id"] = str(row["id"])
+                    del row["id"]
+                db_rows.append(row)
+
+            insert_rows("restaurants", db_rows)
 
     for restaurant in restaurants:
         restaurant_id = restaurant.get("id")
@@ -306,26 +331,53 @@ async def run_full_etl(
     # After processing all restaurants, write ONE CSV per resource (if enabled)
     if include_categories and all_categories:
         process_and_save(all_categories, "categories")
+        insert_rows("categories", all_categories)
 
     if include_products and all_products:
         product_rows = expand_products_for_csv(all_products)
         process_and_save(product_rows, "products")
+        insert_rows("products", product_rows)
 
     if include_vendors and all_vendors:
         vendor_rows = expand_vendors_for_csv(all_vendors)
         process_and_save(vendor_rows, "vendors")
+        insert_rows("vendors", vendor_rows)
 
     if include_vendor_items and all_vendor_items:
         process_and_save(all_vendor_items, "vendor_items")
+        insert_rows("vendor_items", all_vendor_items)
 
     if include_vendor_packaging and all_vendor_packaging:
         process_and_save(all_vendor_packaging, "vendor_packaging")
+        insert_rows("vendor_packaging", all_vendor_packaging)
 
     if include_orders and all_orders:
-        process_and_save(all_orders, "orders")
+        orders_filepath = process_and_save(all_orders, "orders")
+        orders_filename = os.path.basename(orders_filepath) if orders_filepath else None
+        orders_rows = []
+        for o in all_orders:
+            row = dict(o)
+            if orders_filename is not None:
+                row["filename"] = orders_filename
+            orders_rows.append(row)
+        insert_rows("orders", orders_rows)
 
     if include_order_details and all_order_details:
-        process_and_save_order_details(all_order_details, "order_details_all")
+        # Build the same flattened, line-level rows used for the CSV so that
+        # the database table matches the CSV contents row-for-row.
+        order_details_filepath = process_and_save_order_details(
+            all_order_details, "order_details"
+        )
+        order_details_filename = (
+            os.path.basename(order_details_filepath)
+            if order_details_filepath
+            else None
+        )
+        flattened_order_details = build_order_details_rows(all_order_details)
+        if order_details_filename is not None:
+            for row in flattened_order_details:
+                row["filename"] = order_details_filename
+        insert_rows("order_details", flattened_order_details)
 
     logger.info("Full ETL Completed Successfully")
     return summary

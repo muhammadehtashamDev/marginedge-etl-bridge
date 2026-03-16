@@ -22,6 +22,20 @@ This app is a production-level ETL orchestrator built with FastAPI. It extracts,
 - Create a `.env` file in the project root if needed for environment variables.
 - Update `app/main.py` with your admin credentials for API authentication.
 
+### Database (PostgreSQL)
+- Ensure PostgreSQL is running and that the `toast_db` database exists (as shown in pgAdmin).
+- Add the following variables to your `.env` file to match your local setup:
+
+  ```env
+  DB_HOST=localhost
+  DB_PORT=5432
+  DB_NAME=toast_db
+  DB_USER=postgres
+  DB_PASSWORD=your_password_here
+  ```
+
+The ETL will write both CSV files under `data/` and insert the same records into tables in this database (tables are created automatically if they do not exist).
+
 ## Running the App
 Start the FastAPI server using Uvicorn:
 ```bash
