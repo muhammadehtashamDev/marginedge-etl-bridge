@@ -4,6 +4,9 @@ import json
 from app.utils.db import get_db_connection
 
 
+STAGING_SCHEMA = "temp_data"
+
+
 def ensure_table_exists(table_name: str, columns: Sequence[str]) -> None:
 	"""Create a simple table if it does not exist yet.
 
@@ -12,10 +15,13 @@ def ensure_table_exists(table_name: str, columns: Sequence[str]) -> None:
 	new fields in the data (and CSV) are not silently dropped.
 	"""
 	cols_sql = ", ".join(f'"{c}" TEXT' for c in columns)
-	create_sql = f'CREATE TABLE IF NOT EXISTS "{table_name}" (id SERIAL PRIMARY KEY, {cols_sql});'
+	qualified_table = f'{STAGING_SCHEMA}."{table_name}"'
+	create_sql = f'CREATE TABLE IF NOT EXISTS {qualified_table} (id SERIAL PRIMARY KEY, {cols_sql});'
 
 	with get_db_connection() as conn:
 		with conn.cursor() as cur:
+			# Ensure the staging schema exists first
+			cur.execute(f'CREATE SCHEMA IF NOT EXISTS {STAGING_SCHEMA};')
 			# Ensure the table exists
 			cur.execute(create_sql)
 
@@ -24,9 +30,9 @@ def ensure_table_exists(table_name: str, columns: Sequence[str]) -> None:
 				"""
 				SELECT column_name
 				FROM information_schema.columns
-				WHERE table_name = %s
+				WHERE table_schema = %s AND table_name = %s
 				""",
-				(table_name,),
+				(STAGING_SCHEMA, table_name),
 			)
 			existing_cols = {row[0] for row in cur.fetchall()}
 
@@ -57,9 +63,10 @@ def insert_rows(table_name: str, rows: Iterable[Mapping[str, Any]]) -> int:
 				columns.append(key)
 	ensure_table_exists(table_name, columns)
 
+	qualified_table = f'{STAGING_SCHEMA}."{table_name}"'
 	cols_sql = ", ".join(f'"{c}"' for c in columns)
 	placeholders = ", ".join(["%s"] * len(columns))
-	insert_sql = f'INSERT INTO "{table_name}" ({cols_sql}) VALUES ({placeholders})'
+	insert_sql = f'INSERT INTO {qualified_table} ({cols_sql}) VALUES ({placeholders})'
 
 	def _normalize_value(value: Any) -> Any:
 		"""Convert complex Python values into DB-friendly types.
@@ -81,6 +88,10 @@ def insert_rows(table_name: str, rows: Iterable[Mapping[str, Any]]) -> int:
 
 	with get_db_connection() as conn:
 		with conn.cursor() as cur:
+			# Treat these tables as staging/temp tables in the temp_data schema:
+			# clear existing data on each load so the DB procedure can move
+			# data into the final schema without duplicates.
+			cur.execute(f'TRUNCATE TABLE {qualified_table};')
 			cur.executemany(insert_sql, values)
 
 	return len(values)

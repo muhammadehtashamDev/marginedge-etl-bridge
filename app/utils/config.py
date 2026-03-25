@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     ADMIN_USERNAME: str = "admin"
     ADMIN_PASSWORD: str
 
+    # Backup configuration
+    BACKUP_DIR: str = "backup"
+    BACKUP_RETENTION_DAYS: int = 60
+
     # This tells pydantic to look for a .env file
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

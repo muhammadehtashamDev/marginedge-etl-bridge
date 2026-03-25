@@ -12,6 +12,7 @@ from app.services.transformer import (
     build_order_details_rows,
 )
 from app.services.loader import insert_rows
+from app.utils.db import get_db_connection
 from app.utils.config import settings
 from app.utils.http_client import safe_get
 from app.utils.logger import logger
@@ -50,13 +51,18 @@ async def run_full_etl(
     all_orders = []
     all_order_details = []
 
+    # Track generated CSV file paths for backup
+    generated_files: list[str] = []
+
     logger.info("Starting Full ETL Process")
 
     restaurants = await get_all_pages("restaurantUnits", {}, "restaurants")
     summary["restaurants"] = len(restaurants)
 
     if include_restaurants:
-        process_and_save(restaurants, "restaurants")
+        restaurants_filepath = process_and_save(restaurants, "restaurants")
+        if restaurants_filepath:
+            generated_files.append(restaurants_filepath)
 
         # Also persist restaurants into PostgreSQL, ensuring each restaurant
         # is unique by its API `id` within this run. We map the API `id`
@@ -330,25 +336,35 @@ async def run_full_etl(
 
     # After processing all restaurants, write ONE CSV per resource (if enabled)
     if include_categories and all_categories:
-        process_and_save(all_categories, "categories")
+        categories_filepath = process_and_save(all_categories, "categories")
+        if categories_filepath:
+            generated_files.append(categories_filepath)
         insert_rows("categories", all_categories)
 
     if include_products and all_products:
         product_rows = expand_products_for_csv(all_products)
-        process_and_save(product_rows, "products")
+        products_filepath = process_and_save(product_rows, "products")
+        if products_filepath:
+            generated_files.append(products_filepath)
         insert_rows("products", product_rows)
 
     if include_vendors and all_vendors:
         vendor_rows = expand_vendors_for_csv(all_vendors)
-        process_and_save(vendor_rows, "vendors")
+        vendors_filepath = process_and_save(vendor_rows, "vendors")
+        if vendors_filepath:
+            generated_files.append(vendors_filepath)
         insert_rows("vendors", vendor_rows)
 
     if include_vendor_items and all_vendor_items:
-        process_and_save(all_vendor_items, "vendor_items")
+        vendor_items_filepath = process_and_save(all_vendor_items, "vendor_items")
+        if vendor_items_filepath:
+            generated_files.append(vendor_items_filepath)
         insert_rows("vendor_items", all_vendor_items)
 
     if include_vendor_packaging and all_vendor_packaging:
-        process_and_save(all_vendor_packaging, "vendor_packaging")
+        vendor_packaging_filepath = process_and_save(all_vendor_packaging, "vendor_packaging")
+        if vendor_packaging_filepath:
+            generated_files.append(vendor_packaging_filepath)
         insert_rows("vendor_packaging", all_vendor_packaging)
 
     if include_orders and all_orders:
@@ -361,6 +377,8 @@ async def run_full_etl(
                 row["filename"] = orders_filename
             orders_rows.append(row)
         insert_rows("orders", orders_rows)
+        if orders_filepath:
+            generated_files.append(orders_filepath)
 
     if include_order_details and all_order_details:
         # Build the same flattened, line-level rows used for the CSV so that
@@ -378,6 +396,29 @@ async def run_full_etl(
             for row in flattened_order_details:
                 row["filename"] = order_details_filename
         insert_rows("order_details", flattened_order_details)
+        if order_details_filepath:
+            generated_files.append(order_details_filepath)
+
+    # Back up all generated CSVs under backup/range/<start>_to_<end>/
+    if generated_files:
+        try:
+            from app.utils.backup import backup_range_files
+
+            backup_range_files(startDate, endDate, generated_files)
+        except Exception as exc:
+            # Backup failures should not cause the ETL itself to fail
+            logger.error(f"Backup step failed: {exc}")
+
+    # After loading into staging tables, call DB procedure to
+    # move data into the main/actual schema.
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT public.margin_edge_proc_load_data();")
+        logger.info("Called public.margin_edge_proc_load_data() successfully.")
+    except Exception as exc:
+        logger.error(f"Failed to call public.margin_edge_proc_load_data(): {exc}")
+        raise
 
     logger.info("Full ETL Completed Successfully")
     return summary

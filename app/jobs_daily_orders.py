@@ -17,6 +17,7 @@ from app.services.transformer import (
     build_order_details_rows,
 )
 from app.services.loader import insert_rows
+from app.utils.backup import backup_daily_files
 
 MAX_RETRIES = 3
 
@@ -192,7 +193,7 @@ async def fetch_daily_orders_and_details(target_date: date):
 
     if all_orders:
 
-        process_and_save_with_filename(
+        orders_filepath = process_and_save_with_filename(
             all_orders,
             "orders",
             orders_filename,
@@ -216,7 +217,7 @@ async def fetch_daily_orders_and_details(target_date: date):
 
     if all_order_details:
 
-        process_and_save_order_details_with_filename(
+        details_filepath = process_and_save_order_details_with_filename(
             all_order_details,
             details_filename,
         )
@@ -232,10 +233,24 @@ async def fetch_daily_orders_and_details(target_date: date):
             f"Saved {len(all_order_details)} order details -> data/{details_filename}"
         )
 
+        # Back up generated CSVs under backup/daily/<date>/
+        backup_daily_files(date_str, [p for p in [orders_filepath, details_filepath] if p])
+
     else:
         logger.info("No order details collected.")
 
     elapsed = time.time() - start_time
+
+    # After loading into staging tables, call DB procedure to
+    # move data into the main/actual schema.
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("call public.margin_edge_proc_load_data();")
+        logger.info("Called public.margin_edge_proc_load_data() successfully.")
+    except Exception as exc:
+        logger.error(f"Failed to call public.margin_edge_proc_load_data(): {exc}")
+        raise
 
     logger.info(
         f"Daily job completed in {elapsed:.2f} seconds"
