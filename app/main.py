@@ -5,6 +5,7 @@ import secrets
 import asyncio
 from app.services.orchestrator import run_full_etl
 from app.utils.logger import logger
+from app.utils.config import settings
 
 app = FastAPI(
     title="MarginEdge ETL Master",
@@ -15,7 +16,7 @@ app = FastAPI(
 # --- AUTH SETUP ---
 security = HTTPBasic()
 AUTHORIZED_USERS = {
-    "admin": "supersecretpassword"  # Change this to your secure credentials
+    settings.ADMIN_USERNAME: settings.ADMIN_PASSWORD
 }
 
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):

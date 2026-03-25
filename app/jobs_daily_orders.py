@@ -7,6 +7,7 @@ import httpx
 
 from app.services.extractor import get_all_pages
 from app.utils.config import settings
+from app.utils.db import get_db_connection
 from app.utils.http_client import safe_get
 from app.utils.logger import logger
 from app.services.transformer import (
@@ -62,6 +63,36 @@ async def fetch_order_detail(
             f"Failed order detail fetch order_id={order_id} restaurant={restaurant_id}: {exc}"
         )
         return None
+
+
+# -----------------------------
+# Environment & DB Check
+# -----------------------------
+def _check_env_and_db():
+    """Validate required settings and database connectivity.
+
+    This is primarily for running this module directly so that
+    misconfiguration issues are obvious in the logs.
+    """
+    if not settings.MARGIN_EDGE_API_KEY:
+        logger.error("MARGIN_EDGE_API_KEY is empty. Set it in .env.")
+        raise RuntimeError("Missing MARGIN_EDGE_API_KEY")
+
+    logger.info(
+        "Using DB connection host=%s db=%s user=%s",
+        settings.DB_HOST,
+        settings.DB_NAME,
+        settings.DB_USER,
+    )
+
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT 1")
+        logger.info("Database connection test succeeded.")
+    except Exception as exc:
+        logger.error(f"Database connection test failed: {exc}")
+        raise
 
 
 # -----------------------------
@@ -216,7 +247,7 @@ async def fetch_daily_orders_and_details(target_date: date):
 def run_for_yesterday():
 
     target = date.today() - timedelta(days=1)
-
+    _check_env_and_db()
     asyncio.run(fetch_daily_orders_and_details(target))
 
 

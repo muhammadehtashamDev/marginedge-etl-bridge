@@ -20,7 +20,7 @@ This app is a production-level ETL orchestrator built with FastAPI. It extracts,
 
 ## Configuration
 - Create a `.env` file in the project root if needed for environment variables.
-- Update `app/main.py` with your admin credentials for API authentication.
+- Configure admin credentials for API authentication via environment variables (see below).
 
 ### Database (PostgreSQL)
 - Ensure PostgreSQL is running and that the `toast_db` database exists (as shown in pgAdmin).
@@ -32,6 +32,10 @@ This app is a production-level ETL orchestrator built with FastAPI. It extracts,
   DB_NAME=toast_db
   DB_USER=postgres
   DB_PASSWORD=your_password_here
+
+  # FastAPI admin basic-auth credentials
+  ADMIN_USERNAME=admin
+  ADMIN_PASSWORD=your_admin_password_here
   ```
 
 The ETL will write both CSV files under `data/` and insert the same records into tables in this database (tables are created automatically if they do not exist).

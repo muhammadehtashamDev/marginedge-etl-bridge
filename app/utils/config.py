@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     DB_USER: str = "postgres"
     DB_PASSWORD: str = ""
 
+    # API basic-auth credentials for FastAPI admin access
+    ADMIN_USERNAME: str = "admin"
+    ADMIN_PASSWORD: str
+
     # This tells pydantic to look for a .env file
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
