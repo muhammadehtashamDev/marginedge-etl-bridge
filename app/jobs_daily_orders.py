@@ -1,6 +1,7 @@
 import asyncio
 import time
-from datetime import date, timedelta
+import argparse
+from datetime import date, timedelta, datetime
 from typing import List, Dict, Any
 
 import httpx
@@ -251,5 +252,72 @@ def run_for_yesterday():
     asyncio.run(fetch_daily_orders_and_details(target))
 
 
+def run_for_date_range(start: date, end: date):
+
+    if start > end:
+        raise ValueError("start date must be on or before end date")
+
+    logger.info(
+        f"Running daily orders job for date range {start.isoformat()} -> {end.isoformat()}"
+    )
+
+    _check_env_and_db()
+
+    current = start
+    while current <= end:
+        logger.info(f"Executing daily job for {current.isoformat()}")
+        asyncio.run(fetch_daily_orders_and_details(current))
+        current += timedelta(days=1)
+
+
+def _parse_args():
+
+    parser = argparse.ArgumentParser(
+        description=(
+            "Fetch MarginEdge daily orders and order details. "
+            "If no dates are provided, runs for yesterday. "
+            "Otherwise runs for the inclusive date range."
+        )
+    )
+
+    parser.add_argument(
+        "--start-date",
+        "-s",
+        help="Start date in YYYY-MM-DD format (inclusive)",
+    )
+    parser.add_argument(
+        "--end-date",
+        "-e",
+        help="End date in YYYY-MM-DD format (inclusive). "
+        "If omitted but --start-date is provided, the start date is used.",
+    )
+
+    return parser.parse_args()
+
+
+def _parse_date(date_str: str) -> date:
+
+    try:
+        return datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError as exc:
+        raise SystemExit(f"Invalid date '{date_str}'. Expected YYYY-MM-DD.") from exc
+
+
 if __name__ == "__main__":
-    run_for_yesterday()
+
+    args = _parse_args()
+
+    if not args.start_date and not args.end_date:
+        # Default behaviour: run for yesterday when no dates are supplied.
+        run_for_yesterday()
+    else:
+        # If only one bound is provided, treat it as a single-day run.
+        if args.start_date and not args.end_date:
+            start = end = _parse_date(args.start_date)
+        elif args.end_date and not args.start_date:
+            start = end = _parse_date(args.end_date)
+        else:
+            start = _parse_date(args.start_date)
+            end = _parse_date(args.end_date)
+
+        run_for_date_range(start, end)
